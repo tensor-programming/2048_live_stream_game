@@ -24,6 +24,8 @@ class Board {
           ),
     );
 
+    print(_boardTiles);
+
     score = 0;
     resetCanMerge();
     randomEmptyTile();
@@ -177,10 +179,15 @@ class Board {
     } else if (a == b) {
       b.value = b.value * 2;
       a.value = 0;
+      score += b.value;
       b.canMerge = true;
     } else {
       b.canMerge = true;
     }
+  }
+
+  bool gameOver() {
+    return !canMoveLeft() && !canMoveRight() && !canMoveUp() && !canMoveDown();
   }
 
   Tile getTile(int row, int column) {
@@ -199,12 +206,11 @@ class Board {
     }
 
     Random rng = Random();
-    for (int i = 0; i < 4; i++) {
-      int index = rng.nextInt(empty.length);
-      empty[index].value = rng.nextInt(9) == 0 ? 4 : 2;
-      empty[index].isNew = true;
-      empty.removeAt(index);
-    }
+
+    int index = rng.nextInt(empty.length);
+    empty[index].value = rng.nextInt(9) == 0 ? 4 : 2;
+    empty[index].isNew = true;
+    empty.removeAt(index);
   }
 
   void resetCanMerge() {
